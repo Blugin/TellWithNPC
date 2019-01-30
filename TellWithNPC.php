@@ -24,7 +24,7 @@ use pocketmine\nbt\tag\{
     CompoundTag, ListTag, DoubleTag, StringTag, FloatTag
 };
 use pocketmine\command\PluginCommand;
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\item\Item;
 //한글깨짐방지
 
