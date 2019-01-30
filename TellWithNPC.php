@@ -34,7 +34,7 @@ class TellWithNPC extends PluginBase implements Listener{
 		@mkdir($this->getDataFolder());
 		$this->npcDB = new Config($this->getDataFolder() . "Config.yml", Config::YAML);
 		$this->db = $this->npcDB->getAll();
-		Entity::registerEntity(ANPC::class, true);
+		EntityFactory::register(ANPC::class, true);
 		$cmd = new PluginCommand("엔피시", $this);
 		$cmd->setDescription("엔피시 관련 명령어");
 		$this->getServer()->getCommandMap()->register("엔피시", $cmd);
@@ -166,24 +166,12 @@ class TellWithNPC extends PluginBase implements Listener{
 	public function addNpc($name, $player, $msg, $num) {
 		$inv = $player->getInventory();
         $arinv = $player->getArmorInventory();
-        $nbt = new CompoundTag("", [
-            new ListTag("Pos", [
-                new DoubleTag("", $player->x),
-                new DoubleTag("", $player->y),
-                new DoubleTag("", $player->z) ]),
-            new ListTag("Motion", [
-                new DoubleTag("", 0),
-                new DoubleTag("", 0),
-                new DoubleTag("", 0) ]),
-            new ListTag("Rotation",[
-                new FloatTag(0, $player->getYaw()),
-                new FloatTag(0, $player->getPitch())]),
-            new CompoundTag("Skin", [
-                "Data" => new StringTag("Data", $player->getSkin()->getSkinData()),
-                "Name" => new StringTag("Name", $player->getSkin()->getSkinId()),
-            ]),
-        ]);
-        $entity = Entity::createEntity("ANPC", $player->getLevel(), $nbt);
+        $nbt = EntityFactory::createBaseNBT(new Vector3($player->x, $player->y, $player->z);
+	$nbt->setTag(new ListTag("Lotation", [
+		new FloatTag(0, $player->getYaw()),
+		new FloatTag(0, $player->getPitch())
+	]);
+        $entity = EntityFactory::create("ANPC", $player->getLevel(), $nbt);
         $entity->setNameTag($name);
         $entity->setMaxHealth(100);
         $entity->setHealth(100);
